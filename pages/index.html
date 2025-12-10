@@ -7,12 +7,83 @@
   <title>𝖈1𝖕𝖍𝖆𝖗</title>
   <link href="../assets/css/style.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- preload images so network isnt being spammed and make cat animation twin -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const overlay = document.getElementById("enterOverlay");
+      const audio = new Audio("../assets/audio/theme.mp3");
+
+      function calcBPM(bpm) {
+        return 60000 / bpm;
+      }
+      const catDelay = calcBPM(142);
+
+      function preloadImages(imageList, callback) {
+        let loaded = 0;
+        imageList.forEach(src => {
+          const img = new Image();
+          img.onload = img.onerror = () => {
+            loaded++;
+            if (loaded === imageList.length) callback();
+          };
+          img.src = "../assets/images/" + encodeURIComponent(src);
+        });
+      }
+
+      overlay.addEventListener("click", () => {
+        audio.play();
+        overlay.style.display = "none";
+
+        fetch("../data/images.json")
+          .then(r => r.json())
+          .then(images => {
+            preloadImages(images, () => {
+              console.log("loaded");
+
+              const imgA = document.getElementById("animA");
+              const imgB = document.getElementById("animB");
+
+              let index = 0;
+              let showingA = true;
+
+              imgA.src = "../assets/images/" + encodeURIComponent(images[0]);
+              imgA.style.opacity = 1;
+
+              setInterval(() => {
+                index = (index + 1) % images.length;
+                const nextSrc = "../assets/images/" + encodeURIComponent(images[index]);
+
+                if (showingA) {
+                  imgB.src = nextSrc;
+                  imgB.style.opacity = 1;
+                  imgA.style.opacity = 0;
+                } else {
+                  imgA.src = nextSrc;
+                  imgA.style.opacity = 1;
+                  imgB.style.opacity = 0;
+                }
+
+                showingA = !showingA;
+              }, catDelay);
+            });
+          });
+      });
+    });
+  </script>
+
+
+
 </head>
 
 <body class="bg-gray-900">
-  <p class="bg-blue-500 text-center text-white">Under Construction...</p>
-  <button
-    class="text-white bg-blue-500 rounded-md p-2 shadow-md m-2 hover:bg-blue-600 active:bg-blue-400 duration-75 hover:translate-y-[-2.5px] active:translate-y-[-1px] active:scale-95 cursor-pointer">Home</button>
+  <div id="enterOverlay"
+    class="fixed inset-0 bg-black flex items-center justify-center z-50 text-white text-2xl font-bold select-none shadow-white shadow-lg">
+    click to Enter
+  </div>
+  <div id="anim-wrapper" class="w-screen h-auto">
+    <img id="animA" class="anim-frame">
+    <img id="animB" class="anim-frame">
+  </div>
 
 </body>
 
