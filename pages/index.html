@@ -12,6 +12,7 @@
     document.addEventListener("DOMContentLoaded", () => {
       const overlay = document.getElementById("enterOverlay");
       const audio = new Audio("../assets/audio/theme.mp3");
+      audio.loop = true;
 
       function calcBPM(bpm) {
         return 60000 / bpm;
