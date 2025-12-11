@@ -19,6 +19,16 @@
   animation: throb 2s infinite;
 }
 
+
+.hidetopofscreen {
+  transform: translateY(-80vh);
+
+}
+
+#fartpoopcum {
+  transition: transform 1s
+}
+
 @keyframes throb {
 
   0%,
