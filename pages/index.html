@@ -19,6 +19,8 @@
       }
       const catDelay = calcBPM(132);
 
+
+
       function preloadImages(imageList, callback) {
         let loaded = 0;
         imageList.forEach(src => {
@@ -32,15 +34,17 @@
       }
 
       overlay.addEventListener("click", () => {
-        audio.play();
-        overlay.style.display = "none";
+        document.querySelector("#clicktext").remove();
+        document.getElementById("loading").classList.remove("hidden")
 
         fetch("../data/images.json")
           .then(r => r.json())
           .then(images => {
             preloadImages(images, () => {
               console.log("loaded");
-
+              audio.play();
+              overlay.classList.remove("visible");
+              overlay.style.pointerEvents = "none";
               const imgA = document.getElementById("animA");
               const imgB = document.getElementById("animB");
 
@@ -78,8 +82,39 @@
 
 <body class="bg-black">
   <div id="enterOverlay"
-    class="fixed inset-0 bg-black flex items-center justify-center z-50 text-white text-2xl font-bold select-none shadow-white shadow-lg">
-    click to Enter
+    class="visible fixed inset-0 bg-black flex items-center flex-col justify-center z-40 text-white text-2xl font-bold select-none shadow-white shadow-lg transition-opacity opacity-0">
+    <p id="clicktext">click to enter</p>
+    <div>
+      <p id="loading" class="hidden">LOADING<span><strong>…</strong></span></p>
+    </div>
+  </div>
+  <div class="flex w-screen h-screen justify-center relative z-30 items-center">
+    <div
+      class="bg-slate-200/50 h-60 w-[90%] md:w-[70%] lg:w-[40%] rounded-lg backdrop-blur-md flex flex-col justify-center items-center">
+      <div id="Profile" class="flex flex-col justify-center items-center text-center h-auto">
+        <img src="https://cdn.discordapp.com/avatars/1352671603812732970/14354c300d36c88bc446d8fdd97174e9.png?size=256"
+          class="h-24 rounded-full border-black border-2 shadow-sm shadow-slate-800 select-none">
+        <i class="text-2xl text-shadow-sm text-shadow-gray-700 select-none">𝖈1𝖕𝖍𝖆𝖗</i>
+      </div>
+      <div id="Socials" class="grid grid-cols-1 h-10 w-20 items-start text-center z-50 translate-y-1 justify-center">
+
+        <div class=" flex flex-col justify-center items-center">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="1.96 4.26 20.03 15.53"
+            class="w-full peer drop-shadow-sm drop-shadow-slate-700  h-8 hover:h-[35px] transition-all hover:translate-y-[-5px] active:translate-y-[-5px] active:h-[40px] cursor-pointer max-w-52"
+            id="rotate-hover" onclick="document.location = 'discord://-/users/1352671603812732970'">
+            <path fill="currentColor"
+              d="M14.82 4.26a10.14 10.14 0 0 0-.53 1.1a14.66 14.66 0 0 0-4.58 0a10.14 10.14 0 0 0-.53-1.1a16 16 0 0 0-4.13 1.3a17.33 17.33 0 0 0-3 11.59a16.6 16.6 0 0 0 5.07 2.59A12.89 12.89 0 0 0 8.23 18a9.65 9.65 0 0 1-1.71-.83a3.39 3.39 0 0 0 .42-.33a11.66 11.66 0 0 0 10.12 0q.21.18.42.33a10.84 10.84 0 0 1-1.71.84a12.41 12.41 0 0 0 1.08 1.78a16.44 16.44 0 0 0 5.06-2.59a17.22 17.22 0 0 0-3-11.59a16.09 16.09 0 0 0-4.09-1.35zM8.68 14.81a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.93 1.93 0 0 1 1.8 2a1.93 1.93 0 0 1-1.8 2zm6.64 0a1.94 1.94 0 0 1-1.8-2a1.93 1.93 0 0 1 1.8-2a1.92 1.92 0 0 1 1.8 2a1.92 1.92 0 0 1-1.8 2z">
+            </path>
+
+          </svg>
+          <div
+            class="w-20 select-none text-sm h-5 bg-black drop-shadow-sm drop-shadow-black font-bold backdrop-blur-md text-white text-center flex items-center justify-center opacity-0 scale-y-0 peer-hover:opacity-100 peer-hover:scale-100 transform origin-top transition-all rounded-lg overflow-hidden">
+            c1phar
+          </div>
+
+        </div>
+      </div>
+    </div>
   </div>
   <div id="anim-wrapper" class="w-screen h-auto">
     <img id="animA" class="anim-frame">

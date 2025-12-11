@@ -10,3 +10,23 @@
   transition: opacity 0.2s linear;
   object-fit: cover;
 }
+
+.visible {
+  opacity: 100;
+}
+
+#loading strong {
+  animation: throb 2s infinite;
+}
+
+@keyframes throb {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
